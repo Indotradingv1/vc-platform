@@ -167,11 +167,18 @@ namespace VirtoCommerce.Platform.Data.Settings
                     .ToListAsync());
 
                 foreach (var setting in objectSettings.Where(x => x.ItHasValues))
-                {
+                {                   
+
+                    var settingDescriptor = _registeredSettingsByNameDict[setting.Name];
+                    if (settingDescriptor == null)
+                    {
+                        throw new PlatformException($"Setting with name {setting.Name} is not registered");
+                    }
+                    //we need to convert resulting DB entities to model. Use ValueObject.Equals to find already saved setting entity from passed setting
+                    var originalEntity = alreadyExistDbSettings.Where(x => x.Name.EqualsInvariant(setting.Name))
+                                                               .FirstOrDefault(x => x.ToModel(new ObjectSettingEntry(settingDescriptor)).Equals(setting));
+
                     var modifiedEntity = AbstractTypeFactory<SettingEntity>.TryCreateInstance().FromModel(setting);
-                    //we need to convert resulting DB entities to model to use valueObject equals
-                    var originalEntity = alreadyExistDbSettings.Where(x => x.Name == setting.Name)
-                                                               .FirstOrDefault(x => x.ToModel(AbstractTypeFactory<ObjectSettingEntry>.TryCreateInstance()).Equals(setting));
 
                     if (originalEntity != null)
                     {
