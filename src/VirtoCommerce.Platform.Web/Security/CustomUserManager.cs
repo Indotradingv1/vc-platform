@@ -140,8 +140,18 @@ namespace VirtoCommerce.Platform.Web.Security
 
         public override async Task<IdentityResult> UpdateAsync(ApplicationUser user)
         {
-            //It is important to call base.FindByIdAsync method to avoid of update a cached user.
-            var existUser = await base.FindByIdAsync(user.Id);
+            ApplicationUser existUser = null;
+            if (!string.IsNullOrEmpty(user.Id))
+            {
+                //It is important to call base.FindByIdAsync method to avoid of update a cached user.
+                existUser = await base.FindByIdAsync(user.Id);
+            }
+            if (existUser == null)
+            {
+                //It is important to call base.FindByNameAsync method to avoid of update a cached user.
+                existUser = await base.FindByNameAsync(user.UserName);
+            }
+
             //We cant update not existing user
             if(existUser == null)
             {
@@ -162,7 +172,7 @@ namespace VirtoCommerce.Platform.Web.Security
             if (result.Succeeded)
             {
                 await _eventPublisher.Publish(new UserChangedEvent(changedEntries));
-                if (!user.Roles.IsNullOrEmpty())
+                if (user.Roles != null)
                 {
                     var targetRoles = (await GetRolesAsync(existUser));
                     var sourceRoles = user.Roles.Select(x => x.Name);
