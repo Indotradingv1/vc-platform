@@ -1,79 +1,20 @@
-# Deploy Platform from source code
+# Deploy from source code
 
-[Deploy Module from source code](deploy-module-from-source-code.md)
+## Platform from source code getting started
 
+* Get the latest platform source code from [release/3.0.0](https://github.com/VirtoCommerce/vc-platform/tree/release/3.0.0)
 
-## Installation
-
-To get started locally, follow these instructions:
-
-1. Make sure that you have all [Prerequisites](deploy-from-precompiled-binaries-windows.md#prerequisites) installed 
-1. Make fork from the latest platform source code from [latest release](https://github.com/VirtoCommerce/vc-platform/tree/release/3.0.0)
-1. Clone to your local computer using `git` and and switch to the release/3.0.0 branch
-
-```console
-git clone -b release/3.0.0 https://github.com/VirtoCommerce/vc-platform.git
-```
-
-## Building Platform
-
-### Build Backend
-
-To make a local build:
-1. Open console
-
-```console
-cd src/VirtoCommerce.Platform.Web
-```
-2. Build 
-
-```console
-dotnet build -c Development
-```
-
-Or use Visual Studio:
-1. Open VirtoCommerce.Platform.sln in Visual Studio
-2. Build Solution
-
-### Build Frontend 
-
-To make a local build:
-1. Open console
-
-```console
-cd src\VirtoCommerce.Platform.Web
-```
-
-2. Install the dependencies
-
-```console
-npm ci
-```
-
-3. Build frontend application
-
-```console
-npm run webpack:build
-```
-
-4. Watch changes
-
-```console
-npm run webpack:watch
-```
-
-## Initial Configuration 
-
-1. Open the **appsettings.json** file in a text editor
-2. In the **ConnectionStrings** section change **VirtoCommerce** node (provided user should have permission to create new database):
+* Open the **appsettings.json** file in a text editor.
+* In the **ConnectionStrings** section change **VirtoCommerce** node (provided user should have permission to create new database):
 
 ```json
     "ConnectionStrings": {
         "VirtoCommerce" : "Data Source={SQL Server URL};Initial Catalog={Database name};Persist Security Info=True;User ID={User name};Password={User password};MultipleActiveResultSets=True;Connect Timeout=30"
     },
+
 ```
 
-3. In the **Assets** section set public url for assets `Assets:FileSystem:PublicUrl` with url of your application, this step is needed in order for display images
+* In the **Assets** section set public url for assets `Assets:FileSystem:PublicUrl` with url of your application, this step is needed in order for display images
 
 ```json
 "Assets": {
@@ -85,7 +26,7 @@ npm run webpack:watch
     },
 ```
 
-4. In the **Content** section set public url for content `Content:FileSystem:PublicUrl` with url of your application, this step is needed in order for configure CMS content storage
+* In the **Content** section set public url for content `Content:FileSystem:PublicUrl` with url of your application, this step is needed in order for configure CMS content storage
 
 ```json
 "Content*": {
@@ -97,62 +38,81 @@ npm run webpack:watch
     },
 ```
 
-## Running
+### Run from Visual Studio
 
-To run platform by dotnet CLI:
-1. Open console
+* Open `VirtoCommerce.Platform.sln` solution in Visual Studio 2019 and press F5
+
+### Run via dotnet CLI
+
+* Open console
 
 ```console
 cd src\VirtoCommerce.Platform.Web
 ```
 
-2. Run
+* Install all required npm packages
+
+   ```console
+    npm ci
+   ```
+
+*- Bundle all js scripts and css styles
+
+```console
+npm run webpack:build
+```
+
+* Run platform by dotnet CLI.
 
 ```console
 dotnet run -c Development --no-launch-profile
 ```
+
 **Note:** you can add `--no-build` flag to speed the start, if you have compiled the solution already.
 
-
-Or run from Visual Studio
-* Open `VirtoCommerce.Platform.sln` 
-* Set VirtoCommerce.Platform.Web as Startup Project
-* Go to Debug > Start Debugging (or Press F5)
-
-## Usage
-* Open `http://localhost:10645` in the browser
-* On the first request the application will create and initialize database. After that you should see the sign in page. Use the following credentials: `admin/store` to sign in
+* Open  `http://localhost:10645` in the browser.
+* On the first request the application will create and initialize database. After that you should see the sign in page. Use the following credentials: `admin/store` to sign in.
 
 **Note:** Don't forget to change them after the first sign in.
 
-## Backend Debugging
+## Module from source code getting started
 
-* Install and run platform as described in steps above
-* Open the module solution in Visual Studio and attach the debugger to the `VirtoCommerce.Platform.Web.exe` process
+* Run VC Platform  from precompiled binaries or source code as described in the steps above
+* Run command to change the current directory
 
-![image](media/backend-debug.png)
+```console
+cd src\VirtoCommerce.Platform.Web\Modules
+```
 
-## Frontend Debugging
+* Clone module repository from GitHub into `Modules` folder
 
-* Frontend supports debugging in Chrome.
-* Open Chrome Developer Tools (Press F12)
-* Open Sources tab
-* Navigate to `{module-name}/./Script/`
-* Debug code
+```console
+git clone  https://github.com/VirtoCommerce/{module-name.git}  src\VirtoCommerce.Platform.Web\Modules\{module-name}
+```
 
-![image](media/frontend-debug-chrome.png)
+* Build module code
 
-## Testing 
-There is `tests` folder with suites which can be run locally.
+```console
+cd src\VirtoCommerce.Platform.Web\Modules\{module-name}\src\{module-name}.Web
+dotnet build -c Development
+```
 
-## IDE Specific Usage
+* Install all required npm packages
 
-Some additional tips for developing in specific IDEs.
+```console
+npm ci
+```
 
-### Visual Studio
+* Bundle all js scripts and css styles
 
-Recommend to install [WebPack Task Runner](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.WebPackTaskRunner) and run webpack tasks from Visual Studio. 
+```console
+npm run webpack:build
+```
 
-## Troubleshooting
+* Restart the Platform to load the new module assemblies into the Platform's application process
 
-* ['Could not load file or assembly GitVersionTask.MsBuild' when starting the platform through 'dotnet run' command](https://community.virtocommerce.com/t/could-not-load-file-or-assembly-gitversiontask-msbuild-when-starting-the-platform-through-dotnet-run-command/203)
+## How to debug module
+
+* Install and run platform as described in steps above.
+* Setup module from source code as described above, open the module solution in Visual Studio and attach the debugger to the `VirtoCommerce.Platform.Web.exe` process.
+![image](https://user-images.githubusercontent.com/7566324/72246321-1d213380-35fb-11ea-9819-c3fdb92d4e42.png)

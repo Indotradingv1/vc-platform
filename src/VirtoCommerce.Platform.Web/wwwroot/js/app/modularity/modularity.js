@@ -1,4 +1,4 @@
-angular.module('platformWebApp').config(['$stateProvider', function ($stateProvider) {
+﻿angular.module('platformWebApp').config(['$stateProvider', function ($stateProvider) {
     $stateProvider.state('workspace.modularity', {
         url: '/modules',
         templateUrl: '$(Platform)/Scripts/common/templates/home.tpl.html',
@@ -17,7 +17,7 @@ angular.module('platformWebApp').config(['$stateProvider', function ($stateProvi
     $stateProvider.state('setupWizard.modulesInstallation', {
         url: '/modulesInstallation',
         templateUrl: '$(Platform)/Scripts/app/modularity/templates/modulesInstallation.tpl.html',
-        controller: ['$scope', '$state', '$stateParams', '$window', 'platformWebApp.modules', 'platformWebApp.WaitForRestart', 'platformWebApp.exportImport.resource', 'platformWebApp.setupWizard', '$timeout', function ($scope, $state, $stateParams, $window, modules, waitForRestart, exportImportResourse, setupWizard, $timeout) {
+        controller: ['$scope', '$state', '$stateParams', '$window', 'platformWebApp.modules', 'platformWebApp.exportImport.resource', 'platformWebApp.setupWizard', function ($scope, $state, $stateParams, $window, modules, exportImportResourse, setupWizard) {
             $scope.notification = {};
             if ($stateParams.notification) {
                 $scope.notification = $stateParams.notification;
@@ -39,10 +39,7 @@ angular.module('platformWebApp').config(['$stateProvider', function ($stateProvi
                 $scope.restarted = true;
                 modules.restart({}, function () {
                     setupWizard.showStep(step.nextStep);
-                    // delay initial start for 3 seconds
-                    $timeout(function () { }, 3000).then(function () {
-                        return waitForRestart(1000);
-                    });
+                    $window.location.reload();
                 });
             };
 

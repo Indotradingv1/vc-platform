@@ -1,4 +1,4 @@
-angular.module('platformWebApp').controller('platformWebApp.settingsDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.settings.helper', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', '$q', function ($scope, dialogService, settingsHelper, bladeNavigationService, settingsApi, $q) {
+angular.module('platformWebApp').controller('platformWebApp.settingsDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.settings.helper', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', function ($scope, dialogService, settingsHelper, bladeNavigationService, settingsApi) {
     var blade = $scope.blade;
     blade.updatePermission = 'platform:setting:update';
 
@@ -60,9 +60,8 @@ angular.module('platformWebApp').controller('platformWebApp.settingsDetailContro
         return isDirty() && formScope && formScope.$valid;
     }
 
-    blade.saveChanges = function () {
+    function saveChanges() {
         blade.isLoading = true;
-        var deferred = $q.defer();
 
         var objects = _.flatten(_.map(blade.currentEntities, _.values));
         objects = _.map(objects, function (x) {
@@ -80,17 +79,14 @@ angular.module('platformWebApp').controller('platformWebApp.settingsDetailContro
                 blade.origEntity = blade.currentEntities;
                 blade.parentBlade.refresh(true);
             }
-            deferred.resolve();
         });
-
-        return deferred.promise;
     };
 
     blade.headIcon = 'fa-wrench';
     blade.toolbarCommands = [
         {
             name: "platform.commands.save", icon: 'fa fa-save',
-            executeMethod: blade.saveChanges,
+            executeMethod: saveChanges,
             canExecuteMethod: canSave
         },
         {
@@ -103,7 +99,7 @@ angular.module('platformWebApp').controller('platformWebApp.settingsDetailContro
     ];
 
     blade.onClose = function (closeCallback) {
-        bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, blade.saveChanges, closeCallback, "platform.dialogs.settings-delete.title", "platform.dialogs.settings-delete.message");
+        bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, saveChanges, closeCallback, "platform.dialogs.settings-delete.title", "platform.dialogs.settings-delete.message");
     };
 
     $scope.getDictionaryValues = function (setting, callback) {

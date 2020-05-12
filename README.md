@@ -6,7 +6,7 @@ Virto Commerce is a highly scalable eCommerce product for fast-growing and large
 
 Our Virto Commerce 3 development efforts were focused on moving to ASP.NET Core, performance, architecture improvements, further enhancements and fixing architectural bugs.
 
-Virto Commerce 3 is a major release and it consists of Virto Commerce Platform and Virto Commerce Modules. It provides easy and clear way to update from 2.x version by preserving complete backward compatibility for API and Database Schema. During development, the platform and 18+ core modules were moved.
+Virto Commerce 3 is a major release and it consists of Virto Commerce Platform and Virto Commerce Modules. It provides easy and clear migration from 2.x version by preserving complete backward compatibility for API and Database Schema. During development, the platform and 18 core modules were moved.
 
 ## Technology Stack Used
 
@@ -28,7 +28,7 @@ We decided to use the following stack of technologies:
 
 <a class="crosslink" href="https://virtocommerce.com/glossary/what-is-b2b-ecommerce" target="_blank">Platform and modules</a> are written using <a href="https://en.wikipedia.org/wiki/Domain-driven_design" rel="nofollow">DDD</a>, <a href="https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)" rel="nofollow">SOLID</a>, <a href="https://en.wikipedia.org/wiki/Test-driven_development" rel="nofollow">Test Driven Development</a> methodologies. For a presentation layer, we use <a href="https://en.wikipedia.org/wiki/Model_View_ViewModel" rel="nofollow">MVVM</a>.
 
-<img src="/docs/media/architecture-circle.png" title="Virto Commerce 3 Architecture" width="400">
+![Virto Commerce 3 Architecture](/docs/media/architecture-circle.png "Virto Commerce 3 Architecture")
 
 ## Comparison with Platform 2.x
 

@@ -64,10 +64,6 @@
         }
     };
 
-    dialogService.showAcceptanceDialog = function (dialog) {
-        dialogService.showDialog(dialog, '$(Platform)/Scripts/common/dialogs/acceptDialog.tpl.html', 'platformWebApp.confirmDialogController');
-    };
-
     dialogService.showConfirmationDialog = function (dialog) {
         dialogService.showDialog(dialog, '$(Platform)/Scripts/common/dialogs/confirmDialog.tpl.html', 'platformWebApp.confirmDialogController');
     };

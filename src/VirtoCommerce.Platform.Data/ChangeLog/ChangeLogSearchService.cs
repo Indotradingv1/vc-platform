@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.Platform.Core.Common;
@@ -29,7 +28,6 @@ namespace VirtoCommerce.Platform.Data.ChangeLog
             var cacheKey = CacheKey.With(GetType(), nameof(SearchAsync), criteria.GetCacheKey());
             var result = await _memoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                cacheEntry.AddExpirationToken(ChangeLogCacheRegion.CreateChangeToken()); 
                 var searchResult = AbstractTypeFactory<ChangeLogSearchResult>.TryCreateInstance();
 
                 using (var repository = _repositoryFactory())
